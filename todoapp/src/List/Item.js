@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { deleteItem, putItem } from '../api';
+import { useItems } from '../api';
 
 export default function Item({ item, item: { completed = false, title } }) {
   const [focus, setFocus] = useState();
   const [isEditing, setIsEditing] = useState();
   const inputRef = useRef();
+  const [, { deleteItem, putItem }] = useItems();
 
   useEffect(() => {
     if (focus) {

@@ -1,34 +1,36 @@
-import useAxios, { refetch } from 'use-axios';
-import { delete as del, post, put } from 'axios';
+import { createContext, useContext, useState } from 'react';
+
+const ItemsContext = createContext();
+
+let id = 0;
 
 export function useItems() {
-  return useAxios('/api/items').data;
+  return useContext(ItemsContext);
 }
 
-export async function deleteItems(items) {
-  await Promise.all(items.map(({ _id }) => del(`/api/items/${_id}`)));
-  await refetch('/api/items');
+export function Provider({ children }) {
+  const [items, setItems] = useState([]);
+  const actions = {
+    deleteItem: id => setItems(items => items.filter(item => item._id !== id)),
+    deleteItems: items => {
+      for (const item of items) {
+        actions.deleteItem(item._id);
+      }
+    },
+    postItem: item => setItems(items => [...items, { ...item, _id: id++ }]),
+    putItem: updateItem =>
+      setItems(items =>
+        items.map(item => (item._id === updateItem._id ? updateItem : item))
+      ),
+    putItems: items => {
+      for (const item of items) {
+        actions.putItem(item);
+      }
+    }
+  };
+  return (
+    <ItemsContext.Provider value={[items, actions]}>
+      {children}
+    </ItemsContext.Provider>
+  );
 }
-
-export async function deleteItem(id) {
-  await del(`/api/items/${id}`);
-  await refetch('/api/items');
-}
-
-export async function postItem(item) {
-  await post('/api/items', item);
-  await refetch('/api/items');
-}
-
-export async function putItem(item) {
-  await put('/api/items', item);
-  await refetch('/api/items');
-}
-
-export async function putItems(items) {
-  await Promise.all(items.map(item => put('/api/items', item)));
-  await refetch('/api/items');
-}
-
-// Poll API 😕 to get updates from other users and tabs
-setInterval(() => refetch('/api/items'), 5000);

@@ -1,7 +1,7 @@
-import { useItems, deleteItems } from '../api';
+import { useItems } from '../api';
 
 export default function ClearCompleted() {
-  const items = useItems();
+  const [items, { deleteItems }] = useItems();
   const completedItems = items.filter(({ completed }) => completed);
   const { length } = completedItems;
   return length ? (

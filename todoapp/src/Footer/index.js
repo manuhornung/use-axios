@@ -4,7 +4,7 @@ import Counter from './Counter';
 import Filter from './Filter';
 
 export default function Footer() {
-  const items = useItems();
+  const [items] = useItems();
   const { length } = items;
   return length ? (
     <footer className="footer">

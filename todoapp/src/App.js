@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Container from './Container';
+import { Provider } from './api';
 import Footer from './Footer';
 import Input from './Input';
 import List from './List';
@@ -13,19 +14,21 @@ export default function App() {
   return (
     <Suspense fallback="loading...">
       <Container>
-        <BrowserRouter basename={basename}>
-          <section className="todoapp">
-            <header>
-              <h1>todos</h1>
-            </header>
-            <Input />
-            <section className="main">
-              <ToggleAll />
-              <List />
-              <Footer />
+        <Provider>
+          <BrowserRouter basename={basename}>
+            <section className="todoapp">
+              <header>
+                <h1>todos</h1>
+              </header>
+              <Input />
+              <section className="main">
+                <ToggleAll />
+                <List />
+                <Footer />
+              </section>
             </section>
-          </section>
-        </BrowserRouter>
+          </BrowserRouter>
+        </Provider>
       </Container>
     </Suspense>
   );

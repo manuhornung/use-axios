@@ -1,14 +1,15 @@
-import { postItem } from './api';
+import { useItems } from './api';
 
 export default function Input() {
+  const [, { postItem }] = useItems();
   return (
     <input
       autoFocus
       className="new-todo"
-      onKeyDown={async ({ keyCode, target }) => {
+      onKeyDown={({ keyCode, target }) => {
         const title = target.value.trim();
         if (keyCode === 13 && title) {
-          await postItem({ title, timestamp: Date.now() });
+          postItem({ title, timestamp: Date.now() });
           target.value = '';
         }
       }}

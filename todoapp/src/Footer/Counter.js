@@ -1,7 +1,7 @@
 import { useItems } from '../api';
 
 export default function Counter() {
-  const items = useItems();
+  const [items] = useItems();
   const activeItems = items.filter(({ completed }) => !completed);
   const { length } = activeItems;
   return (

@@ -1,7 +1,7 @@
-import { useItems, putItems } from './api';
+import { useItems } from './api';
 
 export default function ToggleAll() {
-  const items = useItems();
+  const [items, { putItems }] = useItems();
   return items.length
     ? (() => {
         const completed = items.every(({ completed }) => completed);

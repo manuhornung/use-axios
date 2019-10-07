@@ -6,7 +6,7 @@ export default function Items({
     params: { filter }
   }
 }) {
-  const items = useItems();
+  const [items] = useItems();
   const listItems = filter
     ? items.filter(
         ({ completed }) => Boolean(completed) === (filter === 'completed')
